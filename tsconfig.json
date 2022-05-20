@@ -9,8 +9,7 @@
     "noImplicitOverride": true,
     "paths": {
       "github-search": [
-        "dist/github-search/github-search",
-        "dist/github-search"
+        "projects/github-search"
       ]
     },
     "noPropertyAccessFromIndexSignature": true,

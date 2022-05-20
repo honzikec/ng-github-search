@@ -1,16 +1,23 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { GithubSearchComponent } from './github-search.component';
+import { UrlInterceptor } from './interceptors/url.interceptor';
+import { DEFAULT_SEARCH_API_URL, GITHUB_SEARCH_API_URL } from './models/githubApiSettings.model';
 
 
 
 @NgModule({
-  declarations: [
-    GithubSearchComponent
-  ],
+  declarations: [],
   imports: [
+    HttpClientModule
   ],
-  exports: [
-    GithubSearchComponent
+  exports: [],
+  providers: [
+    { provide: GITHUB_SEARCH_API_URL, useValue: DEFAULT_SEARCH_API_URL },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UrlInterceptor,
+      multi: true
+    }
   ]
 })
 export class GithubSearchModule { }
