@@ -1,0 +1,24 @@
+@import 'functions';
+
+$min: 10;
+$max: 48;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  @for $i from $min through $max {
+    &.size--#{$i} {
+      width: rem($i);
+      height: rem($i);
+    }
+  }
+
+  ::ng-deep {
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

@@ -15,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "ghs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -26,6 +26,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            },
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -110,7 +115,7 @@
       "projectType": "library",
       "root": "projects/github-search",
       "sourceRoot": "projects/github-search/src",
-      "prefix": "lib",
+      "prefix": "ghs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",

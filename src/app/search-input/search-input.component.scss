@@ -1,0 +1,84 @@
+@import 'variables';
+@import 'functions';
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: 16rem;
+    max-width: 90%;
+    margin-top: rem(48);
+}
+
+.search-form {
+    position: relative;
+    margin-top: rem(32);
+
+    &__button {
+        width: rem(64);
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all .3s ease-out;
+
+        &[disabled] {
+            fill: $color--muted;
+            opacity: .5;
+            cursor: default;
+        }
+
+        &:hover:not([disabled]) {
+            fill: $color--accent;
+        }
+    }
+
+    &__input {
+        width: rem(480);
+        height: rem(48);
+        border-radius: rem(48);
+        border: none;
+        padding: 0 rem(96) 0 rem(32);
+        box-shadow: rgba(0, 0, 0, 0.05) 0rem rem(10) rem(50);
+        border: 1px solid transparent;
+        transition: all .3s ease-out;
+        outline: none;
+
+        &:focus,
+        &:focus-visible {
+            outline: none;
+            box-shadow: rgba(0, 0, 0, 0.1) 0rem rem(10) rem(50);
+            border: 1px solid lighten($color--accent, 45%);
+        }
+    }
+}
+
+.avanced-search__button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: $color--muted;
+    fill: $color--muted;
+    margin-top: 1rem;
+    transition: all .3s ease-out;
+
+    ghs-icon {
+        margin-right: .25rem;
+    }
+
+    &:hover {
+        fill: $color--accent;
+        color: $color--accent;
+    }
+}

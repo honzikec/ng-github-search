@@ -6,7 +6,8 @@
     "start": "ng serve --port=4800",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate-icons": "svg-to-ts-object"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +36,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^13.0.0",
+    "svg-to-ts": "^8.6.1",
     "typescript": "~4.6.2"
   }
 }

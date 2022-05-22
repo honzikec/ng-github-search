@@ -1,0 +1,24 @@
+{
+    "srcFiles": [
+        "./src/resources/icons/*.svg"
+    ],
+    "outputDirectory": "./src/app/icons",
+    "typeName": "Icon",
+    "prefix": "icon",
+    "fileName": "icons.model",
+    "delimiter": "KEBAB",
+    "objectName": "icons",
+    "svgoConfig": {
+        "plugins": [
+            "cleanupAttrs",
+            {
+                "name": "removeAttrs",
+                "params": {
+                    "attrs": "*:fill:((?!^none$).)*"
+                }
+            },
+            "removeDimensions"
+        ]
+    },
+    "compileSources": true
+}

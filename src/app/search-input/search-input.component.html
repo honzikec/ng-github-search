@@ -1,0 +1,21 @@
+<img class="logo"
+     src="assets/logo.svg">
+
+<div class="search-form">
+     <input type="text"
+            class="search-form__input"
+            placeholder="Search GitHub users ..."
+            [(ngModel)]="searchQuery">
+     <button type="submit"
+             [disabled]="!searchQuery"
+             class="search-form__button">
+          <ghs-icon icon="search"
+                    [size]="30"></ghs-icon>
+     </button>
+</div>
+
+<button type="button"
+        class="avanced-search__button">
+     <ghs-icon icon="settings"
+               [size]="18"></ghs-icon> Advanced search
+</button>
