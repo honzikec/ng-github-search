@@ -1,0 +1,68 @@
+<form [formGroup]="form">
+    <fieldset>
+        <legend>Advanced Search Parameters</legend>
+        <div>
+            <label for="type">Account type</label>
+            <select id="type">
+                <option value="">User or organization</option>
+                <option value="usr">User</option>
+                <option value="org">Organization</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="type">Search in</label>
+            <select id="type"
+                    multiple>
+                <option value="in:login"
+                        selected>Username</option>
+                <option value="in:email"
+                        selected>Email</option>
+                <option value="in:name">User's real name</option>
+            </select>
+
+            <input type="checkbox"
+                   id="exact"
+                   formControlName="exactMatch"> <label for="exact">Exact match</label>
+        </div>
+
+        <div *ngFor="let control of activeControls">
+
+            <ng-container *ngIf="control.hasQualifier"
+                          [formGroupName]="control.key">
+                <label [attr.for]="control.key">{{ control.label }}</label>
+                <select formControlName="qualifier">
+                    <option value="=">=</option>
+                    <option value=">">&gt;</option>
+                    <option value=">=">&gt;=</option>
+                    <option value="<">&lt;</option>
+                    <option value="<=">&lt;=</option>
+                </select>
+                <input type="{{ control.type }}"
+                       [attr.id]="control.key"
+                       formControlName="value">
+            </ng-container>
+            <ng-container *ngIf="!control.hasQualifier">
+                <label [attr.for]="control.key">{{ control.label }}</label>
+                <input type="{{ control.type }}"
+                       [attr.id]="control.key"
+                       [formControlName]="control.key">
+            </ng-container>
+
+            <button (click)="deactivateControl(control)">remove</button>
+        </div>
+
+        <ng-template></ng-template>
+
+        <button #button
+                type="button"
+                (click)="triggerMenu(button, criteriaMenu)">Add more search criteria</button>
+        <ng-template #criteriaMenu>
+            <ul>
+                <li *ngFor="let ctrl of inactiveControls">
+                    <button (click)="activateControl(ctrl)">{{ ctrl.label }}</button>
+                </li>
+            </ul>
+        </ng-template>
+    </fieldset>
+</form>

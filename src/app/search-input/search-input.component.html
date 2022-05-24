@@ -14,8 +14,12 @@
      </button>
 </div>
 
-<button type="button"
-        class="avanced-search__button">
+<button *ngIf="!advancedSearchOpen"
+        type="button"
+        class="avanced-search__button"
+        (click)="openAdvancedSearch()">
      <ghs-icon icon="settings"
                [size]="18"></ghs-icon> Advanced search
 </button>
+
+<ghs-advanced-search *ngIf="advancedSearchOpen"></ghs-advanced-search>

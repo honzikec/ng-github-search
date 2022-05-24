@@ -1,5 +1,9 @@
 @import 'styles/variables';
+
+@import '~@angular/cdk/overlay-prebuilt';
+
 @import 'styles/reset';
+
 
 html,
 body {
@@ -8,5 +12,5 @@ body {
 }
 
 body {
-    background: linear-gradient(to bottom, #f6f9fe, #ebeef4);
+    background: linear-gradient(to bottom, $color--background, $color--background-alt);
 }

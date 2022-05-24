@@ -15,7 +15,7 @@ import { GITHUB_SEARCH_API_URL } from '../models/githubApiSettings.model';
 export class UrlInterceptor implements HttpInterceptor {
 
     public constructor(
-        @Inject(GITHUB_SEARCH_API_URL) private _searchApiUrl: string
+        @Inject(GITHUB_SEARCH_API_URL) private readonly _searchApiUrl: string
     ) {
     }
 

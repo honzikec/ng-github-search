@@ -1,0 +1,12 @@
+<ng-container [ngSwitch]="renderMethod">
+    <div *ngSwitchCase="'text'"
+         [innerHtml]="textContent"></div>
+    <ng-container *ngSwitchCase="'template'">
+        <ng-container *ngTemplateOutlet="templateRef; context: context"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'component'">
+        <ng-container *ngIf="component">
+            <ng-container *ngComponentOutlet="component"></ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>

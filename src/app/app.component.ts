@@ -9,8 +9,8 @@ import { GithubSearchService } from 'github-search';
 export class AppComponent implements OnInit {
   title = 'ng-github-search';
 
-  constructor(
-    private _githubService: GithubSearchService
+  public constructor(
+    private readonly _githubService: GithubSearchService
   ) {
   }
 

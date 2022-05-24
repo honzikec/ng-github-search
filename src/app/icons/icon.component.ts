@@ -29,7 +29,7 @@ export class IconComponent {
   }
 
   public constructor(
-    private _domSanitizer: DomSanitizer
+    private readonly _domSanitizer: DomSanitizer
   ) { }
 
 }

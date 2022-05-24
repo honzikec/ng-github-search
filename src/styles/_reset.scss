@@ -41,3 +41,7 @@ input,
 button {
     font-family: $font-family;
 }
+
+.cdk-overlay-backdrop {
+    background-color: transparent;
+}
