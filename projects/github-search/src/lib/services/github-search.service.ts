@@ -48,15 +48,7 @@ export class GithubSearchService {
     }
 
     if (searchParams.exactMatch) {
-      if (Array.isArray(searchParams.exactMatch)) {
-        q = '';
-        searchParams.exactMatch.forEach((field: GithubUserSearchExactMatchField, i: number) => {
-          if (i > 0) { q += '+'; }
-          q += `${field}:${query}`;
-        });
-      } else {
-        q = `${searchParams.exactMatch}:${query}`;
-      }
+      q = `${searchParams.exactMatch}:${query}`;
     }
 
 

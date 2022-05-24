@@ -26,6 +26,11 @@
             <input type="checkbox"
                    id="exact"
                    formControlName="exactMatch"> <label for="exact">Exact match</label>
+            <select formControlName="exactMatchField">
+                <option value="user">Username</option>
+                <option value="org">Organization</option>
+                <option value="fullname">Users's full name</option>
+            </select>
         </div>
 
         <div *ngFor="let control of activeControls">

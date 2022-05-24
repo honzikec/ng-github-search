@@ -4,6 +4,7 @@ export interface SearchFormData {
     accountType: GithubAccountType | 'all';
     containedIn: GithubUserField[];
     exactMatch: boolean;
+    exactMatchField: GithubUserSearchExactMatchField;
     repos?: {
         qualifier: GithubSearchQualifier | 'range',
         valueStart: number,
@@ -34,18 +35,7 @@ export class SearchDataBuilder {
         }
 
         if (formData.exactMatch) {
-            const exactFields: GithubUserSearchExactMatchField[] = [];
-            if (formData.accountType === 'all') {
-                exactFields.push(GithubUserSearchExactMatchField.User);
-                exactFields.push(GithubUserSearchExactMatchField.FullName);
-                exactFields.push(GithubUserSearchExactMatchField.Organization);
-            } else if (formData.accountType === GithubAccountType.User) {
-                exactFields.push(GithubUserSearchExactMatchField.User);
-                exactFields.push(GithubUserSearchExactMatchField.FullName);
-            } else if (formData.accountType === GithubAccountType.Organization) {
-                exactFields.push(GithubUserSearchExactMatchField.Organization);
-            }
-            params.exactMatch = exactFields;
+            params.exactMatch = formData.exactMatchField;
         } else {
             params.containedIn = formData.containedIn;
         }

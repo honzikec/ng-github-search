@@ -30,7 +30,7 @@ export type GithubSearchRange<T> = T | { value: T, qualifier?: GithubSearchQuali
 export interface GithubUserSearchParams {
     accountType?: GithubAccountType;
     containedIn?: GithubUserField | GithubUserField[];
-    exactMatch?: GithubUserSearchExactMatchField | GithubUserSearchExactMatchField[];
+    exactMatch?: GithubUserSearchExactMatchField;
     repos?: GithubSearchRange<number>;
     location?: string;
     language?: string;

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GithubSearchService, GithubSearchUtils, GithubUserSearchParams } from 'github-search';
+import { GithubSearchService, GithubSearchUtils, GithubUserField, GithubUserSearchExactMatchField, GithubUserSearchParams } from 'github-search';
+import { Subject, takeUntil } from 'rxjs';
 import { ControlMeta, DATE_FORMAT_REGEX } from './search-input/advanced-search/models';
 import { SearchUtils } from './search.utils';
 import { SearchDataBuilder } from './searchData.builder';
@@ -8,12 +9,14 @@ import { SearchDataBuilder } from './searchData.builder';
 @Injectable({
   providedIn: 'root'
 })
-export class SearchService {
+export class SearchService implements OnDestroy {
+  private readonly _unsubscribe = new Subject<void>();
 
   private _advancedSearchForm: FormGroup = new FormGroup({
     accountType: new FormControl('all'),
-    containedIn: new FormControl(['user', 'email']),
-    exactMatch: new FormControl(false)
+    containedIn: new FormControl([GithubUserField.Username, GithubUserField.Email]),
+    exactMatch: new FormControl(false),
+    exactMatchField: new FormControl({ value: GithubUserSearchExactMatchField.User, disabled: true })
   });
 
   private _advancedSearchControls: { active: ControlMeta[], inactive: ControlMeta[] } = {
@@ -86,7 +89,26 @@ export class SearchService {
 
   public constructor(
     private _githubSearchService: GithubSearchService
-  ) { }
+  ) {
+
+    this._advancedSearchForm.get('exactMatch')?.valueChanges
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe((exactMatch: boolean) => {
+        if (exactMatch) {
+          this._advancedSearchForm.get('exactMatchField')?.enable();
+          this._advancedSearchForm.get('containedIn')?.disable();
+        } else {
+          this._advancedSearchForm.get('exactMatchField')?.disable();
+          this._advancedSearchForm.get('containedIn')?.enable();
+        }
+      });
+
+  }
+
+  public ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
 
   public search(): void {
     let searchParams: GithubUserSearchParams | undefined;
