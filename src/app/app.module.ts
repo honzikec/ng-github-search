@@ -7,9 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconComponent } from './icons/icon.component';
 import { GhsOverlayModule } from './overlay/overlay.module';
-import { SearchInputComponent } from './search-input/search-input.component';
-import { SearchResultsComponent } from './search-results/search-results.component';
-import { AdvancedSearchComponent } from './search-input/advanced-search/advanced-search.component';
+import { SearchInputComponent } from './search/search-input/search-input.component';
+import { SearchResultsComponent } from './search/search-results/search-results.component';
+import { AdvancedSearchComponent } from './search/search-input/advanced-search/advanced-search.component';
 
 @NgModule({
   imports: [

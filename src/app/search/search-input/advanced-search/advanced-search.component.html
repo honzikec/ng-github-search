@@ -3,9 +3,10 @@
         <legend>Advanced Search Parameters</legend>
         <div>
             <label for="type">Account type</label>
-            <select id="type">
-                <option value="">User or organization</option>
-                <option value="usr">User</option>
+            <select id="type"
+                    formControlName="accountType">
+                <option value="all">User or organization</option>
+                <option value="user">User</option>
                 <option value="org">Organization</option>
             </select>
         </div>
@@ -13,12 +14,13 @@
         <div>
             <label for="type">Search in</label>
             <select id="type"
-                    multiple>
-                <option value="in:login"
+                    multiple
+                    formControlName="containedIn">
+                <option value="user"
                         selected>Username</option>
-                <option value="in:email"
+                <option value="email"
                         selected>Email</option>
-                <option value="in:name">User's real name</option>
+                <option value="name">User's real name</option>
             </select>
 
             <input type="checkbox"
@@ -37,10 +39,16 @@
                     <option value=">=">&gt;=</option>
                     <option value="<">&lt;</option>
                     <option value="<=">&lt;=</option>
+                    <option value="range">Range</option>
                 </select>
                 <input type="{{ control.type }}"
                        [attr.id]="control.key"
-                       formControlName="value">
+                       formControlName="valueStart">
+                <ng-container *ngIf="form.get(control.key + '.qualifier')?.value === 'range'">
+                    to
+                    <input type="{{ control.type }}"
+                           formControlName="valueEnd">
+                </ng-container>
             </ng-container>
             <ng-container *ngIf="!control.hasQualifier">
                 <label [attr.for]="control.key">{{ control.label }}</label>

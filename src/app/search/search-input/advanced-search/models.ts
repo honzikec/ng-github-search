@@ -13,3 +13,5 @@ export interface EnumerationItem {
     value: string;
     label: string;
 }
+
+export const DATE_FORMAT_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;

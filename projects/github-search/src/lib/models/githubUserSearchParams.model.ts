@@ -15,7 +15,7 @@ export enum GithubUserField {
     Email = 'email'
 }
 
-export enum GithubSearchQuantifier {
+export enum GithubSearchQualifier {
     Equals = '=',
     More = '>',
     MoreOrEqual = '>=',
@@ -25,12 +25,12 @@ export enum GithubSearchQuantifier {
 
 export type GithubUserCreated = Date | `${number}-${number}-${number}`;
 
-export type GithubSearchRange<T> = number | { value: T, quantifier?: GithubSearchQuantifier } | { from: T, to: T };
+export type GithubSearchRange<T> = T | { value: T, qualifier?: GithubSearchQualifier } | { from: T, to: T };
 
 export interface GithubUserSearchParams {
     accountType?: GithubAccountType;
     containedIn?: GithubUserField | GithubUserField[];
-    exactMatch?: GithubUserSearchExactMatchField;
+    exactMatch?: GithubUserSearchExactMatchField | GithubUserSearchExactMatchField[];
     repos?: GithubSearchRange<number>;
     location?: string;
     language?: string;

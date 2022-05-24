@@ -5,10 +5,12 @@
      <input type="text"
             class="search-form__input"
             placeholder="Search GitHub users ..."
-            [(ngModel)]="searchQuery">
+            [(ngModel)]="searchQuery"
+            (keydown.enter)="submit()">
      <button type="submit"
              [disabled]="!searchQuery"
-             class="search-form__button">
+             class="search-form__button"
+             (click)="submit()">
           <ghs-icon icon="search"
                     [size]="30"></ghs-icon>
      </button>
