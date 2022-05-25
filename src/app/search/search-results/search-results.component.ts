@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { GithubUser } from 'github-search';
+import { Observable } from 'rxjs';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'ghs-search-results',
@@ -7,7 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchResultsComponent implements OnInit {
 
-  constructor() { }
+  public get results$(): Observable<GithubUser[]> {
+    return this._searchService.results$;
+  }
+
+  public constructor(
+    private readonly _searchService: SearchService
+  ) { }
 
   ngOnInit(): void {
   }

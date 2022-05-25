@@ -1,0 +1,8 @@
+@import 'functions';
+
+.avatar {
+    width: rem(50);
+    height: rem(50);
+    border-radius: 50%;
+    object-fit: cover;
+}

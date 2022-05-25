@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GithubSearchService, GithubSearchUtils, GithubUserField, GithubUserSearchExactMatchField, GithubUserSearchParams } from 'github-search';
+import { GithubSearchService, GithubSearchUtils, GithubUser, GithubUserField, GithubUserSearchExactMatchField, GithubUserSearchParams } from 'github-search';
 import { Subject, takeUntil } from 'rxjs';
 import { ControlMeta, DATE_FORMAT_REGEX } from './search-input/advanced-search/models';
+import { PaginationParams } from './search-results/pagination/models';
 import { SearchUtils } from './search.utils';
 import { SearchDataBuilder } from './searchData.builder';
 
@@ -11,6 +12,12 @@ import { SearchDataBuilder } from './searchData.builder';
 })
 export class SearchService implements OnDestroy {
   private readonly _unsubscribe = new Subject<void>();
+
+  private readonly _resultsSubject = new Subject<GithubUser[]>();
+  private readonly _paginationParamsSubject = new Subject<PaginationParams>();
+
+  public results$ = this._resultsSubject.asObservable();
+  public paginationParams$ = this._paginationParamsSubject.asObservable();
 
   private _advancedSearchForm: FormGroup = new FormGroup({
     accountType: new FormControl('all'),
@@ -88,7 +95,7 @@ export class SearchService implements OnDestroy {
   public advancedSearchOpen = false;
 
   public constructor(
-    private _githubSearchService: GithubSearchService
+    private readonly _githubSearchService: GithubSearchService
   ) {
 
     this._advancedSearchForm.get('exactMatch')?.valueChanges
@@ -111,13 +118,34 @@ export class SearchService implements OnDestroy {
   }
 
   public search(): void {
-    let searchParams: GithubUserSearchParams | undefined;
+    let advancedSearchParams: GithubUserSearchParams | undefined;
     // TODO: active / inactive state
     if (this.advancedSearchOpen) {
-      searchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
+      advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
     }
+
+    const searchParams = { advancedSearchParams };
+
     this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
-      console.log(result);
+      this._resultsSubject.next(result.items);
+      this._paginationParamsSubject.next({ page: 1, total: result.total_count, perPage: 30 });
+    });
+  }
+
+  public goToPage(page: number): void {
+    let advancedSearchParams: GithubUserSearchParams | undefined;
+    // TODO: active / inactive state
+    if (this.advancedSearchOpen) {
+      advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
+    }
+
+    const globalSearchParams = { page: page };
+
+    const searchParams = { advancedSearchParams, globalSearchParams };
+
+    this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
+      this._resultsSubject.next(result.items);
+      this._paginationParamsSubject.next({ page, total: result.total_count, perPage: 30 });
     });
   }
 

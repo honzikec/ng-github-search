@@ -1,0 +1,22 @@
+<div class="links"
+     *ngIf="links && links.length > 1">
+    <button class="links__link links__link--prevnext"
+            [disabled]="page === 1"
+            (click)="changePage(page - 1)">
+        <ghs-icon icon="prev"></ghs-icon>
+    </button>
+    <ng-container *ngFor="let link of links">
+        <button class="links__link"
+                *ngIf="link.page"
+                [class.links__link--active]="link.page === page"
+                (click)="changePage(link.page)">{{ link.label }}</button>
+        <span *ngIf="!link.page">{{ link.label }}</span>
+    </ng-container>
+    <button class="links__link links__link--prevnext"
+            [disabled]="page === links.length"
+            (click)="changePage(page + 1)">
+        <ghs-icon icon="next"></ghs-icon>
+    </button>
+</div>
+
+<div class="total"><strong>{{ totalAvailableRecords }}</strong> records available <span *ngIf="totalAvailableRecords < totalRecords"> out of <strong>{{ totalRecords }}</strong> total</span></div>

@@ -28,10 +28,10 @@ export class AdvancedSearchComponent {
   }
 
   public constructor(
-    private _overlayService: OverlayService,
-    private _overlay: Overlay,
-    private _viewContainerRef: ViewContainerRef,
-    private _searchService: SearchService
+    private readonly _overlayService: OverlayService,
+    private readonly _overlay: Overlay,
+    private readonly _viewContainerRef: ViewContainerRef,
+    private readonly _searchService: SearchService
   ) { }
 
   public triggerMenu(button: HTMLElement, templateRef: TemplateRef<any>): void {

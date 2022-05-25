@@ -1,0 +1,43 @@
+@import 'functions';
+
+.links {
+    display: flex;
+    gap: rem(4);
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-around;
+        width: rem(32);
+        height: rem(32);
+        border: none;
+        background-color: transparent;
+        border-radius: 50%;
+        color: $color--primary;
+        transition: all .3s ease-out;
+        cursor: pointer;
+
+        &[disabled] {
+            opacity: .5;
+            cursor: default;
+        }
+
+        &--prevnext {
+            fill: $color--muted;
+        }
+
+        &:hover {
+            font-weight: bold;
+            background-color: lighten($color--accent, 60%);
+            color: $color--accent;
+            fill: $color--accent;
+        }
+
+        &--active,
+        &--active:hover {
+            font-weight: bold;
+            background-color: $color--accent;
+            color: white;
+        }
+    }
+}

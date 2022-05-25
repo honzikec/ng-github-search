@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { GithubUserSearchExactMatchField, GithubUserSearchParams } from '../models';
+import { GithubUserSearchParams } from '../models';
+import { GithubSearchParams } from '../models/githubSearchParams.model';
 import { GithubSearchResult } from '../models/githubSearchResult.model';
 import { GithubUser } from '../models/githubUser.model';
 import { GithubSearchUtils } from '../utils/github-search.utils';
@@ -15,21 +16,31 @@ export class GithubSearchService {
     private _http: HttpClient
   ) { }
 
-  public searchUser(query: string, searchParams?: GithubUserSearchParams): Observable<GithubSearchResult<GithubUser>> {
+  public searchUser(query: string, searchParams?: { advancedSearchParams?: GithubUserSearchParams, globalSearchParams?: GithubSearchParams }): Observable<GithubSearchResult<GithubUser>> {
     let params = new HttpParams();
 
-    const q = this.constructQuery(query, searchParams);
+    const q = this.constructQuery(query, searchParams?.advancedSearchParams);
     params = params.append('q', q);
 
-    if (searchParams?.accountType) {
-      params = params.append('type', searchParams.accountType);
+    if (searchParams?.advancedSearchParams?.accountType) {
+      params = params.append('type', searchParams?.advancedSearchParams.accountType);
     }
 
-    console.log(params);
+    if (searchParams?.globalSearchParams?.page) {
+      params = params.append('page', searchParams?.globalSearchParams.page);
+    }
+
+    if (searchParams?.globalSearchParams?.per_page) {
+      params = params.append('per_page', searchParams?.globalSearchParams.per_page);
+    }
+
+    if (searchParams?.globalSearchParams?.sort && searchParams?.globalSearchParams?.sort !== 'best match') {
+      params = params.append('page', searchParams?.globalSearchParams.sort);
+    }
 
     // return new Observable(); // TODO: remove, tmp
     return this._http.get<GithubSearchResult<GithubUser>>('users', { params });
-    // this._http.get<GithubSearchResult<GithubUser>>('users', { params }).subscribe({
+    // this._http.get<GithubSearchResult<GithubUser>>('users', { searchParams }).subscribe({
     //   next: response => {
     //     this._foundUsersSubject$.next(response.items);
     //   },
@@ -39,75 +50,75 @@ export class GithubSearchService {
     // });
   }
 
-  private constructQuery(query: string, searchParams?: GithubUserSearchParams): string {
+  private constructQuery(query: string, advancedSearchParams?: GithubUserSearchParams): string {
 
     let q = query;
 
-    if (!searchParams) {
+    if (!advancedSearchParams) {
       return q;
     }
 
-    if (searchParams.exactMatch) {
-      q = `${searchParams.exactMatch}:${query}`;
+    if (advancedSearchParams.exactMatch) {
+      q = `${advancedSearchParams.exactMatch}:${query}`;
     }
 
 
-    if (searchParams.containedIn) {
-      if (Array.isArray(searchParams.containedIn)) {
-        searchParams.containedIn.forEach(field => {
+    if (advancedSearchParams.containedIn) {
+      if (Array.isArray(advancedSearchParams.containedIn)) {
+        advancedSearchParams.containedIn.forEach(field => {
           q += `+in:${field}`;
         });
       } else {
-        q += `+in:${searchParams.containedIn}`;
+        q += `+in:${advancedSearchParams.containedIn}`;
       }
     }
 
-    if (searchParams.repos) {
-      if (typeof searchParams.repos === 'number') {
-        q += `+repos:${searchParams.repos}`;
-      } else if ('value' in searchParams.repos) {
-        q += `+repos:${searchParams.repos.qualifier || ''}${searchParams.repos.value}`;
+    if (advancedSearchParams.repos) {
+      if (typeof advancedSearchParams.repos === 'number') {
+        q += `+repos:${advancedSearchParams.repos}`;
+      } else if ('value' in advancedSearchParams.repos) {
+        q += `+repos:${advancedSearchParams.repos.qualifier || ''}${advancedSearchParams.repos.value}`;
       } else {
-        q += `+repos:${searchParams.repos.from}..${searchParams.repos.to}`;
+        q += `+repos:${advancedSearchParams.repos.from}..${advancedSearchParams.repos.to}`;
       }
     }
 
-    if (searchParams.location) {
-      q += `+location:${searchParams.location}`;
+    if (advancedSearchParams.location) {
+      q += `+location:${advancedSearchParams.location}`;
     }
 
-    if (searchParams.language) {
-      q += `+language:${searchParams.language}`;
+    if (advancedSearchParams.language) {
+      q += `+language:${advancedSearchParams.language}`;
     }
 
-    if (searchParams.created) {
-      if (typeof searchParams.created === 'string') {
-        q += `+created:${searchParams.created}`;
-      } else if (searchParams.created instanceof Date) {
-        q += `+created:${GithubSearchUtils.formatDate(searchParams.created)}`;
-      } else if ('value' in searchParams.created) {
-        const value = searchParams.created.value instanceof Date ? GithubSearchUtils.formatDate(searchParams.created.value) : searchParams.created.value;
-        q += `+created:${searchParams.created.qualifier || ''}${value}`;
+    if (advancedSearchParams.created) {
+      if (typeof advancedSearchParams.created === 'string') {
+        q += `+created:${advancedSearchParams.created}`;
+      } else if (advancedSearchParams.created instanceof Date) {
+        q += `+created:${GithubSearchUtils.formatDate(advancedSearchParams.created)}`;
+      } else if ('value' in advancedSearchParams.created) {
+        const value = advancedSearchParams.created.value instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.value) : advancedSearchParams.created.value;
+        q += `+created:${advancedSearchParams.created.qualifier || ''}${value}`;
       } else {
-        const valueFrom = searchParams.created.from instanceof Date ? GithubSearchUtils.formatDate(searchParams.created.from) : searchParams.created.from;
-        const valueTo = searchParams.created.to instanceof Date ? GithubSearchUtils.formatDate(searchParams.created.to) : searchParams.created.to;
+        const valueFrom = advancedSearchParams.created.from instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.from) : advancedSearchParams.created.from;
+        const valueTo = advancedSearchParams.created.to instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.to) : advancedSearchParams.created.to;
         q += `+created:${valueFrom}..${valueTo}`;
       }
     }
 
 
-    if (searchParams.followers) {
-      if (typeof searchParams.followers === 'number') {
-        q += `+followers:${searchParams.followers}`;
-      } else if ('value' in searchParams.followers) {
-        q += `+followers:${searchParams.followers.qualifier || ''}${searchParams.followers.value}`;
+    if (advancedSearchParams.followers) {
+      if (typeof advancedSearchParams.followers === 'number') {
+        q += `+followers:${advancedSearchParams.followers}`;
+      } else if ('value' in advancedSearchParams.followers) {
+        q += `+followers:${advancedSearchParams.followers.qualifier || ''}${advancedSearchParams.followers.value}`;
       } else {
-        q += `+followers:${searchParams.followers.from}..${searchParams.followers.to}`;
+        q += `+followers:${advancedSearchParams.followers.from}..${advancedSearchParams.followers.to}`;
       }
     }
 
-    if (searchParams.sponsorable !== undefined) {
-      q += `+sponsorable:${searchParams.sponsorable}`;
+    if (advancedSearchParams.sponsorable !== undefined) {
+      q += `+sponsorable:${advancedSearchParams.sponsorable}`;
     }
 
     return q;

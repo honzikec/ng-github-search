@@ -10,6 +10,7 @@ import { GhsOverlayModule } from './overlay/overlay.module';
 import { SearchInputComponent } from './search/search-input/search-input.component';
 import { SearchResultsComponent } from './search/search-results/search-results.component';
 import { AdvancedSearchComponent } from './search/search-input/advanced-search/advanced-search.component';
+import { PaginationComponent } from './search/search-results/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { AdvancedSearchComponent } from './search/search-input/advanced-search/a
     IconComponent,
     SearchInputComponent,
     SearchResultsComponent,
-    AdvancedSearchComponent
+    AdvancedSearchComponent,
+    PaginationComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
