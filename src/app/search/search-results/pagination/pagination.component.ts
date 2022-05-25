@@ -42,7 +42,6 @@ export class PaginationComponent implements OnDestroy {
     this._searchService.paginationParams$
       .pipe(takeUntil(this._unsubscribe))
       .subscribe(params => {
-        console.log('triggered?', params.page);
         this._page = params.page;
         this._links = this.generateLinks(params);
       });
@@ -102,8 +101,6 @@ export class PaginationComponent implements OnDestroy {
       }
 
     }
-
-    console.log('generated?', links);
 
     return links;
 

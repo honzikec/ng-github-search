@@ -1,24 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { GithubSearchService } from 'github-search';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'ghs-search',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  title = 'ng-github-search';
+export class AppComponent {
 
-  public constructor(
-    private readonly _githubService: GithubSearchService
-  ) {
-  }
-
-  public ngOnInit(): void {
-
-    // this._githubService.searchUser('hon').subscribe(res => {
-    //   console.log('search res', res);
-    // });
-
-  }
 }

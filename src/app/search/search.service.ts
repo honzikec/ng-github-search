@@ -16,6 +16,8 @@ export class SearchService implements OnDestroy {
   private readonly _resultsSubject = new Subject<GithubUser[]>();
   private readonly _paginationParamsSubject = new Subject<PaginationParams>();
 
+  private readonly _recordCache = new Map<number, { records: GithubUser[], paginationParams: PaginationParams }>();
+
   public results$ = this._resultsSubject.asObservable();
   public paginationParams$ = this._paginationParamsSubject.asObservable();
 
@@ -115,38 +117,16 @@ export class SearchService implements OnDestroy {
   public ngOnDestroy(): void {
     this._unsubscribe.next();
     this._unsubscribe.complete();
+    this._recordCache.clear();
   }
 
   public search(): void {
-    let advancedSearchParams: GithubUserSearchParams | undefined;
-    // TODO: active / inactive state
-    if (this.advancedSearchOpen) {
-      advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
-    }
-
-    const searchParams = { advancedSearchParams };
-
-    this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
-      this._resultsSubject.next(result.items);
-      this._paginationParamsSubject.next({ page: 1, total: result.total_count, perPage: 30 });
-    });
+    this._recordCache.clear();
+    this.searchInternal(1);
   }
 
   public goToPage(page: number): void {
-    let advancedSearchParams: GithubUserSearchParams | undefined;
-    // TODO: active / inactive state
-    if (this.advancedSearchOpen) {
-      advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
-    }
-
-    const globalSearchParams = { page: page };
-
-    const searchParams = { advancedSearchParams, globalSearchParams };
-
-    this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
-      this._resultsSubject.next(result.items);
-      this._paginationParamsSubject.next({ page, total: result.total_count, perPage: 30 });
-    });
+    this.searchInternal(page);
   }
 
   public activateControl(controlMeta: ControlMeta): void {
@@ -157,6 +137,33 @@ export class SearchService implements OnDestroy {
   public deactivateControl(controlMeta: ControlMeta): void {
     SearchUtils.moveBetweenArrays(controlMeta, this._advancedSearchControls.active, this._advancedSearchControls.inactive);
     this._advancedSearchForm.removeControl(controlMeta.key);
+  }
+
+  private searchInternal(page: number): void {
+    let advancedSearchParams: GithubUserSearchParams | undefined;
+    // TODO: active / inactive state
+    if (this.advancedSearchOpen) {
+      advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
+    }
+
+    const globalSearchParams = { page: page };
+
+    const searchParams = { advancedSearchParams, globalSearchParams };
+
+    const cachedPage = this._recordCache.get(page);
+
+    if (cachedPage) {
+      this._resultsSubject.next(cachedPage.records);
+      this._paginationParamsSubject.next(cachedPage.paginationParams);
+    } else {
+      this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
+        const paginationParams = { page, total: result.total_count, perPage: 30 };
+        const records = result.items;
+        this._resultsSubject.next(result.items);
+        this._paginationParamsSubject.next(paginationParams);
+        this._recordCache.set(page, { records, paginationParams });
+      });
+    }
   }
 
 }
