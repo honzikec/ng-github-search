@@ -10,7 +10,7 @@ export enum GithubUserSearchExactMatchField {
 }
 
 export enum GithubUserField {
-    Username = 'user',
+    Username = 'login',
     FullName = 'name',
     Email = 'email'
 }
