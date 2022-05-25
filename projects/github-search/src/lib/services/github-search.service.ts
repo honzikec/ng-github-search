@@ -19,7 +19,7 @@ export class GithubSearchService {
   public searchUser(query: string, searchParams?: { advancedSearchParams?: GithubUserSearchParams, globalSearchParams?: GithubSearchParams }): Observable<GithubSearchResult<GithubUser>> {
     let params = new HttpParams();
 
-    const q = this.constructQuery(query, searchParams?.advancedSearchParams);
+    const q = this.constructQuery(query, searchParams);
     params = params.append('q', q);
 
     if (searchParams?.advancedSearchParams?.accountType) {
@@ -34,10 +34,6 @@ export class GithubSearchService {
       params = params.append('per_page', searchParams?.globalSearchParams.per_page);
     }
 
-    if (searchParams?.globalSearchParams?.sort && searchParams?.globalSearchParams?.sort !== 'best match') {
-      params = params.append('page', searchParams?.globalSearchParams.sort);
-    }
-
     // return new Observable(); // TODO: remove, tmp
     return this._http.get<GithubSearchResult<GithubUser>>('users', { params });
     // this._http.get<GithubSearchResult<GithubUser>>('users', { searchParams }).subscribe({
@@ -50,75 +46,83 @@ export class GithubSearchService {
     // });
   }
 
-  private constructQuery(query: string, advancedSearchParams?: GithubUserSearchParams): string {
+  private constructQuery(query: string, searchParams?: { advancedSearchParams?: GithubUserSearchParams, globalSearchParams?: GithubSearchParams }): string {
 
     let q = query;
 
-    if (!advancedSearchParams) {
+    if (!searchParams) {
       return q;
     }
 
-    if (advancedSearchParams.exactMatch) {
-      q = `${advancedSearchParams.exactMatch}:${query}`;
-    }
+    if (searchParams.advancedSearchParams) {
+      const advancedSearchParams = searchParams.advancedSearchParams;
+
+      if (advancedSearchParams.exactMatch) {
+        q = `${advancedSearchParams.exactMatch}:${query}`;
+      }
 
 
-    if (advancedSearchParams.containedIn) {
-      if (Array.isArray(advancedSearchParams.containedIn)) {
-        advancedSearchParams.containedIn.forEach(field => {
-          q += `+in:${field}`;
-        });
-      } else {
-        q += `+in:${advancedSearchParams.containedIn}`;
+      if (advancedSearchParams.containedIn) {
+        if (Array.isArray(advancedSearchParams.containedIn)) {
+          advancedSearchParams.containedIn.forEach(field => {
+            q += `+in:${field}`;
+          });
+        } else {
+          q += `+in:${advancedSearchParams.containedIn}`;
+        }
+      }
+
+      if (advancedSearchParams.repos) {
+        if (typeof advancedSearchParams.repos === 'number') {
+          q += `+repos:${advancedSearchParams.repos}`;
+        } else if ('value' in advancedSearchParams.repos) {
+          q += `+repos:${advancedSearchParams.repos.qualifier || ''}${advancedSearchParams.repos.value}`;
+        } else {
+          q += `+repos:${advancedSearchParams.repos.from}..${advancedSearchParams.repos.to}`;
+        }
+      }
+
+      if (advancedSearchParams.location) {
+        q += `+location:${advancedSearchParams.location}`;
+      }
+
+      if (advancedSearchParams.language) {
+        q += `+language:${advancedSearchParams.language}`;
+      }
+
+      if (advancedSearchParams.created) {
+        if (typeof advancedSearchParams.created === 'string') {
+          q += `+created:${advancedSearchParams.created}`;
+        } else if (advancedSearchParams.created instanceof Date) {
+          q += `+created:${GithubSearchUtils.formatDate(advancedSearchParams.created)}`;
+        } else if ('value' in advancedSearchParams.created) {
+          const value = advancedSearchParams.created.value instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.value) : advancedSearchParams.created.value;
+          q += `+created:${advancedSearchParams.created.qualifier || ''}${value}`;
+        } else {
+          const valueFrom = advancedSearchParams.created.from instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.from) : advancedSearchParams.created.from;
+          const valueTo = advancedSearchParams.created.to instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.to) : advancedSearchParams.created.to;
+          q += `+created:${valueFrom}..${valueTo}`;
+        }
+
+        if (advancedSearchParams.followers) {
+          if (typeof advancedSearchParams.followers === 'number') {
+            q += `+followers:${advancedSearchParams.followers}`;
+          } else if ('value' in advancedSearchParams.followers) {
+            q += `+followers:${advancedSearchParams.followers.qualifier || ''}${advancedSearchParams.followers.value}`;
+          } else {
+            q += `+followers:${advancedSearchParams.followers.from}..${advancedSearchParams.followers.to}`;
+          }
+        }
+
+        if (advancedSearchParams.sponsorable !== undefined) {
+          q += `+sponsorable:${advancedSearchParams.sponsorable}`;
+        }
+
       }
     }
 
-    if (advancedSearchParams.repos) {
-      if (typeof advancedSearchParams.repos === 'number') {
-        q += `+repos:${advancedSearchParams.repos}`;
-      } else if ('value' in advancedSearchParams.repos) {
-        q += `+repos:${advancedSearchParams.repos.qualifier || ''}${advancedSearchParams.repos.value}`;
-      } else {
-        q += `+repos:${advancedSearchParams.repos.from}..${advancedSearchParams.repos.to}`;
-      }
-    }
-
-    if (advancedSearchParams.location) {
-      q += `+location:${advancedSearchParams.location}`;
-    }
-
-    if (advancedSearchParams.language) {
-      q += `+language:${advancedSearchParams.language}`;
-    }
-
-    if (advancedSearchParams.created) {
-      if (typeof advancedSearchParams.created === 'string') {
-        q += `+created:${advancedSearchParams.created}`;
-      } else if (advancedSearchParams.created instanceof Date) {
-        q += `+created:${GithubSearchUtils.formatDate(advancedSearchParams.created)}`;
-      } else if ('value' in advancedSearchParams.created) {
-        const value = advancedSearchParams.created.value instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.value) : advancedSearchParams.created.value;
-        q += `+created:${advancedSearchParams.created.qualifier || ''}${value}`;
-      } else {
-        const valueFrom = advancedSearchParams.created.from instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.from) : advancedSearchParams.created.from;
-        const valueTo = advancedSearchParams.created.to instanceof Date ? GithubSearchUtils.formatDate(advancedSearchParams.created.to) : advancedSearchParams.created.to;
-        q += `+created:${valueFrom}..${valueTo}`;
-      }
-    }
-
-
-    if (advancedSearchParams.followers) {
-      if (typeof advancedSearchParams.followers === 'number') {
-        q += `+followers:${advancedSearchParams.followers}`;
-      } else if ('value' in advancedSearchParams.followers) {
-        q += `+followers:${advancedSearchParams.followers.qualifier || ''}${advancedSearchParams.followers.value}`;
-      } else {
-        q += `+followers:${advancedSearchParams.followers.from}..${advancedSearchParams.followers.to}`;
-      }
-    }
-
-    if (advancedSearchParams.sponsorable !== undefined) {
-      q += `+sponsorable:${advancedSearchParams.sponsorable}`;
+    if (searchParams?.globalSearchParams?.sort) {
+      q += '+sort:' + searchParams?.globalSearchParams.sort.field + (searchParams?.globalSearchParams.sort.direction ? `-${searchParams?.globalSearchParams.sort.direction}` : '');
     }
 
     return q;

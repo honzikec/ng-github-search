@@ -1,9 +1,10 @@
+<ghs-sorting></ghs-sorting>
 <ul>
     <li *ngFor="let result of results$ | async">
-        <img [src]="result.avatar_url" class="avatar">
+        <img [src]="result.avatar_url"
+             class="avatar">
         <a [href]="result.html_url">@{{ result.login }}</a>
 
     </li>
 </ul>
-
 <ghs-pagination></ghs-pagination>

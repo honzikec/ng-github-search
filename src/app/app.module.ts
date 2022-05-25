@@ -11,6 +11,7 @@ import { SearchInputComponent } from './search/search-input/search-input.compone
 import { SearchResultsComponent } from './search/search-results/search-results.component';
 import { AdvancedSearchComponent } from './search/search-input/advanced-search/advanced-search.component';
 import { PaginationComponent } from './search/search-results/pagination/pagination.component';
+import { SortingComponent } from './search/search-results/sorting/sorting.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { PaginationComponent } from './search/search-results/pagination/paginati
     SearchInputComponent,
     SearchResultsComponent,
     AdvancedSearchComponent,
-    PaginationComponent
+    PaginationComponent,
+    SortingComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

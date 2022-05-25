@@ -3,3 +3,4 @@ export * from './githubMatch.model';
 export * from './githubSearchResult.model';
 export * from './githubUser.model';
 export * from './githubUserSearchParams.model';
+export * from './githubUserSortParams.model';

@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GithubSearchService, GithubSearchUtils, GithubUser, GithubUserField, GithubUserSearchExactMatchField, GithubUserSearchParams } from 'github-search';
+import { GithubSearchService, GithubSearchUtils, GithubUser, GithubUserField, GithubUserSearchExactMatchField, GithubUserSearchParams, GithubUserSortParam } from 'github-search';
+import { GithubSearchParams } from 'projects/github-search/src/lib/models/githubSearchParams.model';
 import { Subject, takeUntil } from 'rxjs';
 import { ControlMeta, DATE_FORMAT_REGEX } from './search-input/advanced-search/models';
 import { PaginationParams } from './search-results/pagination/models';
@@ -129,6 +130,11 @@ export class SearchService implements OnDestroy {
     this.searchInternal(page);
   }
 
+  public sort(sortParam: GithubUserSortParam | undefined): void {
+    this._recordCache.clear();
+    this.searchInternal(1, sortParam);
+  }
+
   public activateControl(controlMeta: ControlMeta): void {
     SearchUtils.moveBetweenArrays(controlMeta, this._advancedSearchControls.inactive, this._advancedSearchControls.active);
     this._advancedSearchForm.addControl(controlMeta.key, controlMeta.control);
@@ -139,14 +145,14 @@ export class SearchService implements OnDestroy {
     this._advancedSearchForm.removeControl(controlMeta.key);
   }
 
-  private searchInternal(page: number): void {
+  private searchInternal(page: number, sort?: GithubUserSortParam): void {
     let advancedSearchParams: GithubUserSearchParams | undefined;
     // TODO: active / inactive state
     if (this.advancedSearchOpen) {
       advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
     }
 
-    const globalSearchParams = { page: page };
+    const globalSearchParams: GithubSearchParams = { page, sort };
 
     const searchParams = { advancedSearchParams, globalSearchParams };
 
