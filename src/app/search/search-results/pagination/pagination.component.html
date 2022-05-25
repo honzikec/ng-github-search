@@ -19,4 +19,6 @@
     </button>
 </div>
 
-<div class="total"><strong>{{ totalAvailableRecords }}</strong> records available <span *ngIf="totalAvailableRecords < totalRecords"> out of <strong>{{ totalRecords }}</strong> total</span></div>
+<div class="total"><strong>{{ totalAvailableRecords }}</strong> record<ng-container *ngIf="totalAvailableRecords !== 1">s
+    </ng-container> available <span *ngIf="totalAvailableRecords < totalRecords"> out of <strong>{{ totalRecords
+            }}</strong> total</span></div>
