@@ -112,7 +112,7 @@ export class GithubSearchService {
     }
 
     if (searchParams?.globalSearchParams?.sort) {
-      q += '+sort:' + searchParams?.globalSearchParams.sort.field + (searchParams?.globalSearchParams.sort.direction ? `- ${searchParams?.globalSearchParams.sort.direction} ` : '');
+      q += '+sort:' + searchParams?.globalSearchParams.sort.field + (searchParams?.globalSearchParams.sort.direction ? `-${searchParams?.globalSearchParams.sort.direction} ` : '');
     }
 
     return q;
