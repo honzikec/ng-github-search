@@ -24,6 +24,8 @@ select[multiple] {
     padding: rem(8) rem(16) rem(8) rem(4);
 }
 
+// Checkbox styling borrowed from https://codepen.io/zFunx/pen/dWbevd
+
 input[type=checkbox]+label {
     display: block;
     margin: rem(8);
