@@ -10,7 +10,7 @@ You can find an example app that uses the library in the `src` folder. To run it
 
 The example app imitates the Google search UI a little bit and also uses some Material Icons, so thanks Google and I am sorry!
 
-The app provides a nice example on how to abstract an API into a convenient user interface, so feel free to take inspiration!
+The app provides a nice example on how to abstract an API into a convenient user interface, so feel free to take inspiration! It even has a primitive search result caching!
 
 > Please note that the app has only been tested in Google Chrome on a desktop computer as of now.
 
