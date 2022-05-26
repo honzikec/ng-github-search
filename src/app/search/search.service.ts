@@ -95,7 +95,7 @@ export class SearchService implements OnDestroy {
   }
 
   public searchQuery = '';
-  public advancedSearchOpen = true;
+  public advancedSearchOpen = false;
 
   public constructor(
     private readonly _githubSearchService: GithubSearchService

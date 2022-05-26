@@ -1,5 +1,12 @@
 @import 'functions';
 
+:host {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: rem(24) 0;
+}
+
 .links {
     display: flex;
     gap: rem(4);
@@ -40,4 +47,9 @@
             color: white;
         }
     }
+}
+
+.total {
+    font-size: rem(12);
+    color: $color--muted;
 }

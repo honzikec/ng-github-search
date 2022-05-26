@@ -1,0 +1,27 @@
+@import 'functions';
+
+:host {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: rem(16);
+    padding: rem(16) 0;
+}
+
+button {
+    background: transparent;
+    border: none;
+    fill: $color--primary;
+    cursor: pointer;
+
+    &:hover {
+        fill: $color--accent;
+    }
+
+    &[disabled],
+    &[disabled]:hover {
+        cursor: default;
+        fill: $color--muted;
+        opacity: .8;
+    }
+}

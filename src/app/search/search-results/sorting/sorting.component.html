@@ -11,11 +11,13 @@
     <button type="button"
             [disabled]="sortDirection === 'desc'"
             (click)="setDirection('desc')">
-        <ghs-icon icon="arrow-down"></ghs-icon>
+        <ghs-icon icon="arrow-down"
+                  [size]="16"></ghs-icon>
     </button>
     <button type="button"
             [disabled]="sortDirection === 'asc'"
             (click)="setDirection('asc')">
-        <ghs-icon icon="arrow-up"></ghs-icon>
+        <ghs-icon icon="arrow-up"
+                  [size]="16"></ghs-icon>
     </button>
 </ng-container>

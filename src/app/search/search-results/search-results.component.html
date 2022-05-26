@@ -1,10 +1,17 @@
-<ghs-sorting></ghs-sorting>
-<ul>
-    <li *ngFor="let result of results$ | async">
-        <img [src]="result.avatar_url"
-             class="avatar">
-        <a [href]="result.html_url">@{{ result.login }}</a>
-
-    </li>
-</ul>
-<ghs-pagination></ghs-pagination>
+<ng-container *ngIf="(results$ | async) as results">
+    <ng-container *ngIf="results.length > 1">
+        <div class="wrapper">
+            <ghs-sorting></ghs-sorting>
+            <div class="item"
+                 *ngFor="let result of results">
+                <img [src]="result.avatar_url"
+                     class="avatar">
+                <div>
+                    <a [href]="result.html_url">@{{ result.login }}</a>
+                    <div class="item__meta">Type: <strong>{{ result.type }}</strong></div>
+                </div>
+            </div>
+            <ghs-pagination></ghs-pagination>
+        </div>
+    </ng-container>
+</ng-container>
