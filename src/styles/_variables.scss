@@ -9,3 +9,20 @@ $color--accent: #3763AD;
 $color--muted: #5e6470;
 $color--background: #f6f9fe;
 $color--background-alt: #ebeef4;
+$color--warning: #cd6600;
+$color--error: #E11645;
+
+$text-ish-inputs: 'input[type="email"]',
+'input[type="number"]',
+'input[type="password"]',
+'input[type="search"]',
+'input[type="tel"]',
+'input[type="text"]',
+'input[type="url"]',
+'input[type="color"]',
+'input[type="date"]',
+'input[type="datetime"]',
+'input[type="datetime-local"]',
+'input[type="month"]',
+'input[type="time"]',
+'input[type="week"]';

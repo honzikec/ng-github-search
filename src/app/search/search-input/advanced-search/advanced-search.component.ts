@@ -1,6 +1,6 @@
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { PopoverRef } from 'src/app/overlay/popoverRef';
 import { OverlayService } from '../../../overlay/overlay.service';
 import { SearchService } from '../../search.service';
@@ -9,10 +9,14 @@ import { ControlMeta } from './models';
 @Component({
   selector: 'ghs-advanced-search',
   templateUrl: './advanced-search.component.html',
-  styleUrls: ['./advanced-search.component.scss']
+  styleUrls: ['./advanced-search.component.scss'],
+  host: { '[class.search-active]': 'searchActive' }
 })
 export class AdvancedSearchComponent {
   private _popoverRef: PopoverRef | undefined;
+
+  @Input()
+  public searchActive = false;
 
 
   public get activeControls(): ControlMeta[] {
@@ -71,6 +75,10 @@ export class AdvancedSearchComponent {
 
   public deactivateControl(controlMeta: ControlMeta): void {
     this._searchService.deactivateControl(controlMeta);
+  }
+
+  public reset(): void {
+    this._searchService.resetAdvancedSearch();
   }
 
 }

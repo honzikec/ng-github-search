@@ -1,16 +1,20 @@
 @import 'functions';
 
 :host {
+    display: block;
     background-color: darken($color--background-alt, 4%);
     border-radius: rem(8);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px;
     margin-top: rem(24);
     padding: rem(16);
+
+    &.search-active {
+        margin-top: 0;
+    }
 }
 
-fieldset {
-    display: flex;
-    flex-direction: column;
+.fieldset {
+    display: block;
     border: 0;
     padding: 0;
     margin: 0;
@@ -19,18 +23,90 @@ fieldset {
     legend {
         font-weight: 600;
         font-size: rem(12);
+        margin-bottom: rem(16);
+    }
+
+    &__fixed {
+        display: flex;
+        gap: rem(16);
+    }
+
+    &__item {
+        margin-bottom: rem(16);
+
+        &--dynamic {
+            display: flex;
+            align-items: center;
+            gap: rem(16);
+        }
     }
 }
 
-// select[multiple] {
-//     background: none;
-//     width: auto;
-//     height: auto;
-//     padding: 0;
-//     margin: 0;
-//     border-width: 2px;
-//     border-style: inset;
-//     -moz-appearance: menulist;
-//     -webkit-appearance: menulist;
-//     appearance: menulist;
-// }
+.list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.list__item {
+    position: relative;
+    padding: rem(4);
+
+    &:not(:last-child) {
+        border-bottom: 1px solid $color--background-alt;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: transparent;
+        transition: color .3s ease-out;
+        cursor: pointer;
+
+        &:hover {
+            color: $color--accent;
+        }
+    }
+}
+
+.remove-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    fill: $color--warning;
+    transition: fill .3s ease-out;
+
+    &:hover {
+        fill: $color--error;
+    }
+}
+
+.button-extra {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    fill: $color--accent;
+    color: $color--accent;
+    transition: all .3s ease-out;
+
+    &:hover {
+        fill: darken($color--accent, 10%);
+        color: darken($color--accent, 10%);
+    }
+
+    &--reset {
+        fill: $color--error;
+        color: $color--error;
+        margin-left: rem(16);
+
+        &:hover {
+            fill: darken($color--error, 10%);
+            color: darken($color--error, 10%);
+        }
+
+    }
+}

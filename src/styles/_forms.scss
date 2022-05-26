@@ -1,0 +1,73 @@
+label {
+    font-size: rem(12);
+    font-weight: 500;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-bottom: rem(4);
+}
+
+#{$text-ish-inputs},
+select {
+    height: rem(32);
+    line-height: rem(32);
+    background: white;
+    padding: 0 rem(8);
+    border-radius: rem(4);
+    font-size: rem(14);
+    border: 1px solid darken(white, 4%);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+select[multiple] {
+    height: rem(72);
+    padding: rem(8) rem(16) rem(8) rem(4);
+}
+
+input[type=checkbox]+label {
+    display: block;
+    margin: rem(8);
+    cursor: pointer;
+    padding: 0;
+    line-height: rem(24);
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox]+label:before {
+    content: "\2714";
+    border: 2px solid darken(white, 4%);
+    border-radius: rem(4);
+    display: inline-block;
+    width: rem(24);
+    height: rem(24);
+    padding-left: rem(4);
+    background: white;
+    margin-right: rem(8);
+    vertical-align: bottom;
+    color: transparent;
+    transition: all .1s ease-in;
+}
+
+input[type=checkbox]+label:active:before {
+    transform: scale(0);
+}
+
+input[type=checkbox]:checked+label:before {
+    background-color: $color--accent;
+    border-color: $color--accent;
+    color: white;
+}
+
+input[type=checkbox]:disabled+label:before {
+    transform: scale(1);
+    background-color: $color--muted;
+}
+
+input[type=checkbox]:checked:disabled+label:before {
+    transform: scale(1);
+    background-color: lighten($color--accent, 20%);
+    border-color: lighten($color--accent, 20%);
+}

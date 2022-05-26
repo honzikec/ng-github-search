@@ -95,7 +95,7 @@ export class SearchService implements OnDestroy {
   }
 
   public searchQuery = '';
-  public advancedSearchOpen = false;
+  public advancedSearchOpen = true;
 
   public constructor(
     private readonly _githubSearchService: GithubSearchService
@@ -143,6 +143,17 @@ export class SearchService implements OnDestroy {
   public deactivateControl(controlMeta: ControlMeta): void {
     SearchUtils.moveBetweenArrays(controlMeta, this._advancedSearchControls.active, this._advancedSearchControls.inactive);
     this._advancedSearchForm.removeControl(controlMeta.key);
+  }
+
+  public resetAdvancedSearch(): void {
+    this.advancedSearchOpen = false;
+    this._advancedSearchControls.active.forEach(ctrl => {
+      this.deactivateControl(ctrl);
+    });
+    this.advancedSearchForm.get('accountType')?.patchValue('all');
+    this.advancedSearchForm.get('containedIn')?.patchValue([GithubUserField.Username, GithubUserField.Email]);
+    this.advancedSearchForm.get('exactMatch')?.patchValue(false);
+    this.advancedSearchForm.get('exactMatchField')?.patchValue(GithubUserSearchExactMatchField.User);
   }
 
   private searchInternal(page: number, sort?: GithubUserSortParam): void {

@@ -1,39 +1,45 @@
-<form [formGroup]="form">
-    <fieldset>
+<form [formGroup]="form"
+      class="wrapper">
+    <fieldset class="fieldset">
         <legend>Advanced Search Parameters</legend>
-        <div>
-            <label for="type">Account type</label>
-            <select id="type"
-                    formControlName="accountType">
-                <option value="all">User or organization</option>
-                <option value="user">User</option>
-                <option value="org">Organization</option>
-            </select>
+        <div class="fieldset__fixed">
+            <div class="fieldset__item">
+                <label for="type">Account type</label>
+                <select id="type"
+                        formControlName="accountType">
+                    <option value="all">User or organization</option>
+                    <option value="user">User</option>
+                    <option value="org">Organization</option>
+                </select>
+            </div>
+
+            <div class="fieldset__item">
+                <label for="type">Search in</label>
+                <select id="type"
+                        multiple
+                        formControlName="containedIn">
+                    <option value="login"
+                            selected>Username</option>
+                    <option value="email"
+                            selected>Email</option>
+                    <option value="name">User's real name</option>
+                </select>
+            </div>
+
+            <div class="fieldset__item">
+                <input type="checkbox"
+                       id="exact"
+                       formControlName="exactMatch"> <label for="exact">Exact match</label>
+                <select formControlName="exactMatchField">
+                    <option value="user">Username</option>
+                    <option value="org">Organization</option>
+                    <option value="fullname">Users's full name</option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label for="type">Search in</label>
-            <select id="type"
-                    multiple
-                    formControlName="containedIn">
-                <option value="login"
-                        selected>Username</option>
-                <option value="email"
-                        selected>Email</option>
-                <option value="name">User's real name</option>
-            </select>
-
-            <input type="checkbox"
-                   id="exact"
-                   formControlName="exactMatch"> <label for="exact">Exact match</label>
-            <select formControlName="exactMatchField">
-                <option value="user">Username</option>
-                <option value="org">Organization</option>
-                <option value="fullname">Users's full name</option>
-            </select>
-        </div>
-
-        <div *ngFor="let control of activeControls">
+        <div *ngFor="let control of activeControls"
+             class="fieldset__item fieldset__item--dynamic">
 
             <ng-container *ngIf="control.hasQualifier"
                           [formGroupName]="control.key">
@@ -56,23 +62,41 @@
                 </ng-container>
             </ng-container>
             <ng-container *ngIf="!control.hasQualifier">
-                <label [attr.for]="control.key">{{ control.label }}</label>
+                <label *ngIf="control.type !== 'checkbox'"
+                       [attr.for]="control.key">{{ control.label }}</label>
                 <input type="{{ control.type }}"
                        [attr.id]="control.key"
                        [formControlName]="control.key">
+                <label *ngIf="control.type === 'checkbox'"
+                       [attr.for]="control.key">{{ control.label }}</label>
             </ng-container>
 
-            <button (click)="deactivateControl(control)">remove</button>
+            <button title="Remove item"
+                    class="remove-button"
+                    (click)="deactivateControl(control)">
+                <ghs-icon icon="remove"></ghs-icon>
+            </button>
         </div>
 
         <ng-template></ng-template>
 
         <button #button
                 type="button"
-                (click)="triggerMenu(button, criteriaMenu)">Add more search criteria</button>
+                (click)="triggerMenu(button, criteriaMenu)"
+                class="button-extra">
+            <ghs-icon icon="plus"></ghs-icon> Add search criteria
+        </button>
+
+        <button type="reset"
+                (click)="reset()"
+                class="button-extra button-extra--reset">
+            <ghs-icon icon="clear-filter"></ghs-icon> Clear advanced search
+        </button>
+
         <ng-template #criteriaMenu>
-            <ul>
-                <li *ngFor="let ctrl of inactiveControls">
+            <ul class="list">
+                <li class="list__item"
+                    *ngFor="let ctrl of inactiveControls">
                     <button (click)="activateControl(ctrl)">{{ ctrl.label }}</button>
                 </li>
             </ul>

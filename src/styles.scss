@@ -1,8 +1,9 @@
-@import 'styles/variables';
+@import 'styles/functions';
 
 @import '~@angular/cdk/overlay-prebuilt';
 
 @import 'styles/reset';
+@import 'styles/forms';
 
 
 html,
@@ -13,4 +14,10 @@ body {
 
 body {
     background: linear-gradient(to bottom, $color--background, $color--background-alt);
+    color: $color--primary;
+}
+
+.wrapper {
+    max-width: rem(1200);
+    margin: 0 auto;
 }

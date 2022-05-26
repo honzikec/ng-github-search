@@ -1,21 +1,40 @@
 @import 'variables';
 @import 'functions';
 
-:host {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.search {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &--search-active {
+        background-color: white;
+
+        .wrapper {
+            flex-direction: row;
+        }
+    }
 }
 
 .logo {
     width: 16rem;
     max-width: 90%;
     margin-top: rem(48);
+
+    &--search-active {
+        margin: rem(8) rem(16) rem(8) 0;
+        width: 8rem;
+    }
 }
 
 .search-form {
     position: relative;
     margin-top: rem(32);
+
+    &--search-active {
+        margin: rem(8) 0;
+    }
 
     &__button {
         width: rem(64);
@@ -62,7 +81,7 @@
     }
 }
 
-.avanced-search__button {
+.advanced-search__button {
     border: none;
     background: none;
     cursor: pointer;
@@ -70,15 +89,20 @@
     align-items: center;
     color: $color--muted;
     fill: $color--muted;
-    margin-top: 1rem;
+    margin-top: rem(16);
     transition: all .3s ease-out;
 
     ghs-icon {
         margin-right: .25rem;
     }
 
-    &:hover {
+    &:hover, &--active {
         fill: $color--accent;
         color: $color--accent;
+    }
+
+    &--search-active {
+        margin-top: 0;
+        margin-left: auto;
     }
 }

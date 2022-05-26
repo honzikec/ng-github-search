@@ -1,27 +1,37 @@
-<img class="logo"
-     src="assets/logo.svg">
+<div class="search"
+     [class.search--search-active]="searchActivated">
+     <div class="wrapper">
+          <img class="logo"
+               [class.logo--search-active]="searchActivated"
+               alt="GitHubble"
+               src="assets/logo.svg">
 
-<div class="search-form">
-     <input type="text"
-            class="search-form__input"
-            placeholder="Search GitHub users ..."
-            [(ngModel)]="searchQuery"
-            (keydown.enter)="submit()">
-     <button type="submit"
-             [disabled]="!searchQuery"
-             class="search-form__button"
-             (click)="submit()">
-          <ghs-icon icon="search"
-                    [size]="30"></ghs-icon>
-     </button>
+          <div class="search-form"
+               [class.search-form--search-active]="searchActivated">
+               <input type="text"
+                      class="search-form__input"
+                      placeholder="Search GitHub users ..."
+                      [(ngModel)]="searchQuery"
+                      (keydown.enter)="submit()">
+               <button type="submit"
+                       [disabled]="!searchQuery"
+                       class="search-form__button"
+                       (click)="submit()">
+                    <ghs-icon icon="search"
+                              [size]="30"></ghs-icon>
+               </button>
+          </div>
+
+          <button type="button"
+                  class="advanced-search__button"
+                  [class.advanced-search__button--search-active]="searchActivated"
+                  [class.advanced-search__button--active]="advancedSearchOpen"
+                  (click)="toggleAdvancedSearch()">
+               <ghs-icon icon="settings"
+                         [size]="18"></ghs-icon> Advanced search
+          </button>
+     </div>
 </div>
 
-<button *ngIf="!advancedSearchOpen"
-        type="button"
-        class="avanced-search__button"
-        (click)="openAdvancedSearch()">
-     <ghs-icon icon="settings"
-               [size]="18"></ghs-icon> Advanced search
-</button>
-
-<ghs-advanced-search *ngIf="advancedSearchOpen"></ghs-advanced-search>
+<ghs-advanced-search *ngIf="advancedSearchOpen"
+                     [searchActive]="searchActivated"></ghs-advanced-search>
