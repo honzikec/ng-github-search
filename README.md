@@ -12,12 +12,17 @@ The example app imitates the Google search UI a little bit and also uses some Ma
 
 The app provides a nice example on how to abstract an API into a convenient user interface, so feel free to take inspiration!
 
+> Please note that the app has only been tested in Google Chrome on a desktop computer as of now.
+
 ## TODOs
 
 - Add tests!
 - Add documentation.
+- Unify naming conventions.
 - Test and debug the example app.
 - Improve the example app's design and accessibility.
+- Responsiveness.
+- Cross-browser testing.
 
 ## Future Work
 - Support other endpoints apart from the user search.
