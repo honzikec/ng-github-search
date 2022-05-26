@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { GithubUserSortField, GithubUserSortParam } from 'github-search';
+import { GithubUser, GithubUserSortField, GithubUserSortParam } from 'github-search';
+import { Observable } from 'rxjs';
 import { SearchService } from '../../search.service';
 
 @Component({
@@ -15,6 +16,10 @@ export class SortingComponent {
 
   public get sortDirection(): 'asc' | 'desc' {
     return this._sortDirection;
+  }
+
+  public get results$(): Observable<GithubUser[]> {
+    return this._searchService.results$;
   }
 
   public constructor(

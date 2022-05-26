@@ -1,23 +1,27 @@
-<label for="sort">Sort by</label>
-<select id="sort"
-        [(ngModel)]="sortBy"
-        (ngModelChange)="sort()">
-    <option value="">Best match</option>
-    <option value="followers">Number of followers</option>
-    <option value="repositories">Number of repositories</option>
-    <option value="joined">Date joined</option>
-</select>
-<ng-container *ngIf="sortBy">
-    <button type="button"
-            [disabled]="sortDirection === 'desc'"
-            (click)="setDirection('desc')">
-        <ghs-icon icon="arrow-down"
-                  [size]="16"></ghs-icon>
-    </button>
-    <button type="button"
-            [disabled]="sortDirection === 'asc'"
-            (click)="setDirection('asc')">
-        <ghs-icon icon="arrow-up"
-                  [size]="16"></ghs-icon>
-    </button>
+<ng-container *ngIf="results$ | async as results">
+    <ng-container *ngIf="results.length > 0">
+        <label for="sort">Sort by</label>
+        <select id="sort"
+                [(ngModel)]="sortBy"
+                (ngModelChange)="sort()">
+            <option value="">Best match</option>
+            <option value="followers">Number of followers</option>
+            <option value="repositories">Number of repositories</option>
+            <option value="joined">Date joined</option>
+        </select>
+        <ng-container *ngIf="sortBy">
+            <button type="button"
+                    [disabled]="sortDirection === 'desc'"
+                    (click)="setDirection('desc')">
+                <ghs-icon icon="arrow-down"
+                          [size]="16"></ghs-icon>
+            </button>
+            <button type="button"
+                    [disabled]="sortDirection === 'asc'"
+                    (click)="setDirection('asc')">
+                <ghs-icon icon="arrow-up"
+                          [size]="16"></ghs-icon>
+            </button>
+        </ng-container>
+    </ng-container>
 </ng-container>

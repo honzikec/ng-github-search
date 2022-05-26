@@ -15,12 +15,14 @@ export class SearchService implements OnDestroy {
   private readonly _unsubscribe = new Subject<void>();
 
   private readonly _resultsSubject = new Subject<GithubUser[]>();
+  private readonly _errorsSubject = new Subject<{ message: string }[] | null>();
   private readonly _paginationParamsSubject = new Subject<PaginationParams>();
 
   private readonly _recordCache = new Map<number, { records: GithubUser[], paginationParams: PaginationParams }>();
 
   public results$ = this._resultsSubject.asObservable();
   public paginationParams$ = this._paginationParamsSubject.asObservable();
+  public errors$ = this._errorsSubject.asObservable();
 
   private _advancedSearchForm: FormGroup = new FormGroup({
     accountType: new FormControl('all'),
@@ -158,7 +160,7 @@ export class SearchService implements OnDestroy {
 
   private searchInternal(page: number, sort?: GithubUserSortParam): void {
     let advancedSearchParams: GithubUserSearchParams | undefined;
-    // TODO: active / inactive state
+
     if (this.advancedSearchOpen) {
       advancedSearchParams = SearchDataBuilder.buildParams(this._advancedSearchForm.value);
     }
@@ -172,13 +174,23 @@ export class SearchService implements OnDestroy {
     if (cachedPage) {
       this._resultsSubject.next(cachedPage.records);
       this._paginationParamsSubject.next(cachedPage.paginationParams);
+      this._errorsSubject.next(null);
     } else {
-      this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe(result => {
-        const paginationParams = { page, total: result.total_count, perPage: 30 };
-        const records = result.items;
-        this._resultsSubject.next(result.items);
-        this._paginationParamsSubject.next(paginationParams);
-        this._recordCache.set(page, { records, paginationParams });
+      this._githubSearchService.searchUser(this.searchQuery, searchParams).subscribe({
+        next: result => {
+          const paginationParams = { page, total: result.total_count, perPage: 30 };
+          const records = result.items;
+          this._resultsSubject.next(result.items);
+          this._paginationParamsSubject.next(paginationParams);
+          this._recordCache.set(page, { records, paginationParams });
+          this._errorsSubject.next(null);
+        },
+        error: (error: { error: { errors: { message: string }[] } }) => {
+          this._resultsSubject.next([]);
+          this._errorsSubject.next(error.error.errors);
+          const paginationParams = { page, total: 0, perPage: 30 };
+          this._paginationParamsSubject.next(paginationParams);
+        }
       });
     }
   }

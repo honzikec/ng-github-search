@@ -29,3 +29,37 @@
         font-weight: 600;
     }
 }
+
+.no-results {
+    background: white;
+    color: $color--muted;
+    fill: $color--muted;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    font-weight: 600;
+    font-size: rem(14);
+    margin: rem(32) 0;
+    padding: rem(24);
+    border-radius: rem(8);
+
+    &__headline {
+        display: flex;
+        align-items: center;
+    }
+
+    ghs-icon {
+        margin-right: rem(16);
+    }
+
+    ul {
+        list-style: disc;
+        padding: rem(16) rem(48) rem(16);
+    }
+
+    &--errors {
+        border: 1px solid $color--error;
+        .no-results__headline {
+            color: $color--error;
+            fill: $color--error;
+        }
+    }
+}
