@@ -69,6 +69,8 @@ export class PaginationComponent implements OnDestroy {
       links = Array(totalPages).fill(0).map((v: number, i: number) => { const page = i + 1; const label = page.toString(); return { page, label } });
     } else {
 
+      // Borrowed some logic from https://jasonwatmore.com/post/2018/08/07/javascript-pure-pagination-logic-in-vanilla-js-typescript
+
       let startPage = 1;
       let endPage = 1;
 
