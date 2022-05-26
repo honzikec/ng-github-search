@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { GithubSearchModule } from 'projects/github-search/src/public-api';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconComponent } from './icons/icon.component';
 import { GhsOverlayModule } from './overlay/overlay.module';
@@ -18,7 +17,6 @@ import { SortingComponent } from './search/search-results/sorting/sorting.compon
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
     GithubSearchModule,
     GhsOverlayModule
   ],
