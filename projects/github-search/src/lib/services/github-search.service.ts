@@ -34,16 +34,7 @@ export class GithubSearchService {
       params = params.append('per_page', searchParams?.globalSearchParams.per_page);
     }
 
-    // return new Observable(); // TODO: remove, tmp
     return this._http.get<GithubSearchResult<GithubUser>>('users', { params });
-    // this._http.get<GithubSearchResult<GithubUser>>('users', { searchParams }).subscribe({
-    //   next: response => {
-    //     this._foundUsersSubject$.next(response.items);
-    //   },
-    //   error: (error: any) => {
-    //     console.error(error);
-    //   }
-    // });
   }
 
   private constructQuery(query: string, searchParams?: { advancedSearchParams?: GithubUserSearchParams, globalSearchParams?: GithubSearchParams }): string {

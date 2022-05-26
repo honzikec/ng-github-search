@@ -44,7 +44,6 @@ export class PaginationComponent implements OnDestroy {
       .subscribe(params => {
         this._page = params.page;
         this._links = this.generateLinks(params);
-        console.log('params', params);
       });
   }
 
