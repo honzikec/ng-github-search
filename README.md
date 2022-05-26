@@ -1,27 +1,23 @@
-# NgGithubSearch
+# Ng GitHub Search
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.1.
+Ng GitHub Search is an Angular library that wraps the Github search API into convenient types and provides a service that constructs the search request for you.
 
-## Development server
+> Please note that it only supports searching users as of now.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Example Implementation.
 
-## Code scaffolding
+You can find an example app that uses the library in the `src` folder. To run it, simply run `npm i`, than `npm start` and open [localhost:4800](http://localhost:4800).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The example app imitates the Google search UI a little bit and also uses some Material Icons, so thanks Google and I am sorry!
 
-## Build
+The app provides a nice example on how to abstract an API into a convenient user interface, so feel free to take inspiration!
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## TODOs
 
-## Running unit tests
+- Add tests!
+- Add documentation.
+- Test and debug the example app.
+- Improve the example app's design and accessibility.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Future Work
+- Support other endpoints apart from the user search.
